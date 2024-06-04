@@ -1,4 +1,4 @@
-# Project Title
+# Prueba-Tecnica-Atix
 
 El código es un ejemplo de un RPA utilizando puppeter, una herramienta de automatización de navegador para Node.js, para realizar tareas automatizadas en un sitio web específico.
 
