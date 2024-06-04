@@ -18,7 +18,7 @@ app.post('/generate-pdf', async (req, res) => {
         const pdfBuffer = await generatePdf({
             tipoDocumento: req.body.tipoDocumento,
             numeroDocumento: req.body.numeroDocumento,
-            captchaText: req.body.captchaText,
+            //captchaText: req.body.captchaText,
         });
 
 /*         res.status(200)
