@@ -34,6 +34,12 @@ En nuestra terminal ejecutamos el siguiente comando
 
 Estos nos ejecutara el backend para hacer las peticiones
 
+Para consultar al cliente se realizara una peticion post
+
+```code
+localhost:3005/generate-pdf
+```
+
 Estructura de la peticion
 
 ```code
@@ -43,8 +49,4 @@ Estructura de la peticion
 }
 ```
 
-
-## Demo
-
-Insert gif or link to demo
 
