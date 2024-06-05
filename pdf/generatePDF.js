@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default async function generatePdf({ tipoDocumento,numeroDocumento, captchaText }) {
+export default async function generatePdf({ tipoDocumento,numeroDocumento, captchaText="42113" }) {
     const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: {
@@ -34,23 +34,22 @@ export default async function generatePdf({ tipoDocumento,numeroDocumento, captc
     
     // Esperar a que el selector esté disponible dentro del iframe
     await frame.waitForSelector('select[name="tipoDoc"]');
-    
-    // Hacer clic en el selector dentro del iframe
-    await frame.click('select[name="tipoDoc"]');
+    await frame.waitForSelector('input[name="txtNumDoc"]');
+    await frame.waitForSelector('input[name="Capcha$CaptchaTextBox"]');
 
     // Seleccionar una opción del dropdown
     await frame.select('select[name="tipoDoc"]', tipoDocumento); // Por ejemplo, selecciona "Tarjeta de Identidad"
     
     // Esperar a que los inputs estén disponibles dentro del iframe
-    await frame.waitForSelector('input[name="txtNumDoc"]');
-    await new Promise(r => setTimeout(r, 5000));
+    
+    await new Promise(r => setTimeout(r, 1000));
     
     console.log(numeroDocumento);
     // Ingresar el número de documento en el input correspondiente
     await frame.type('input[name="txtNumDoc"]', numeroDocumento);
-    await new Promise(r => setTimeout(r, 5000));
+    await new Promise(r => setTimeout(r, 1000));
     
-    await frame.waitForSelector('input[name="Capcha$CaptchaTextBox"]');
+    
     // Manejar el captcha
     const captchaImageSrc = await frame.evaluate(() => {
         const captchaImage = document.querySelector('img[id="Capcha_CaptchaImageUP"]');
@@ -101,4 +100,10 @@ export default async function generatePdf({ tipoDocumento,numeroDocumento, captc
         console.error('Error al guardar el archivo HTML:', error);
     }
     await browser.close();
+
+    // Devolver las rutas de los archivos generados
+    return {
+        imgFilePath,
+        htmlFilePath
+    };
 }

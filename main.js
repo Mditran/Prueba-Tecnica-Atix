@@ -14,24 +14,26 @@ app.use('/img', express.static(path.join(__dirname, 'src/img')));
 app.use('/html', express.static(path.join(__dirname, 'src/html')));
 
 app.post('/generate-pdf', async (req, res) => {
-    try {
-        const pdfBuffer = await generatePdf({
-            tipoDocumento: req.body.tipoDocumento,
-            numeroDocumento: req.body.numeroDocumento,
-            //captchaText: req.body.captchaText,
-        });
 
-/*         res.status(200)
-            .set({
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': true,
-                'Content-Type': 'application/pdf',
-            })
-            .end(pdfBuffer); */
-    } catch (error) {
-        console.error('Error al generar el PDF:', error);
-        res.status(500).json({ error: 'Error al generar el PDF' });
+    const results = [];
+
+    for (const request of req.body) {
+        try {
+            const pdfBuffer = await generatePdf({
+                tipoDocumento: request.tipoDocumento,
+                numeroDocumento: request.numeroDocumento
+            });
+
+            // Agrega la respuesta al array de resultados
+            results.push(pdfBuffer);
+        } catch (error) {
+            console.error('Error al generar el PDF:', error);
+            // Si hay un error, agrega un objeto con el error al array de resultados
+            results.push({ error: 'Error al generar el PDF' });
+        }
     }
+     // Devuelve los resultados como respuesta
+    res.json(results);
 });
 
 app.listen(port, () => console.log(`Listening on port: ${port}`));

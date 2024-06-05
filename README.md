@@ -43,10 +43,16 @@ localhost:3005/generate-pdf
 Estructura de la peticion
 
 ```code
-{
-  "tipoDocumento": "1144099480",
-  "numeroDocumento": "CC"
-}
+[
+  { 
+    "tipoDocumento": "TI", 
+    "numeroDocumento": "1133099480" 
+  },
+  { 
+    "tipoDocumento": "CC", 
+    "numeroDocumento": "1144099480"
+  }
+]
 ```
 
 
